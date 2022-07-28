@@ -24,6 +24,7 @@ export class UsersService {
       ],
       phone: user.phone,
       password: null,
+      token: null,
       type: user.type,
       appVersion: user.appVersion,
     });

@@ -5,6 +5,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDto, RegisterDto } from 'src/dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { TokenType } from 'src/types/token.type';
 
 @Injectable()
 export class AuthService {
@@ -34,29 +35,32 @@ export class AuthService {
     const otp = await this.usersUtils.otpCreator();
     await this.usersUtils.smsSender(user.phone, otp);
     const hash = await this.hashData(otp);
-    const sendSms = await this.usersUtils.smsSender(user.phone , otp)
-    console.log('sms status' , sendSms)
+    const sendSms = await this.usersUtils.smsSender(user.phone, otp);
+    console.log('sms status', sendSms);
     console.log('OTP+CODE : ', otp);
 
     ///update password for login
     if (foundUser) {
       this.usersService.updatePasswordUser(foundUser, hash);
+      return { token: otp };
     } else {
       const newuser = await this.usersService.createUser({
         phone: user.phone,
         type: user.type,
         appVersion: user.appVersion,
+        token: otp.toString(),
       });
-      if (newuser) return this.usersService.updatePasswordUser(newuser, hash);
+      if (newuser) {
+        return this.usersService.updatePasswordUser(foundUser, hash);
+      }
     }
-
-    /// create and update  password
   }
 
   /// routes services { Login }
 
-  async loginUser(user: any) {
+  async loginUser(user: any): Promise<TokenType> {
     const payload = { sub: user };
+
     return {
       access_token: this.jwtService.sign(payload, {
         secret: jwtConstants.secret,

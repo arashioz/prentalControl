@@ -12,6 +12,7 @@ import { RegisterDto } from './dto/user.dto';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { UsersService } from './users/users.service';
+import { TokenType } from './types/token.type';
 
 @Controller('api/v1')
 export class AppController {
@@ -34,14 +35,22 @@ export class AppController {
   /// authantication users
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
-  login(@Request() req) {
+  login(@Request() req): Promise<TokenType> {
     return this.authService.loginUser(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
+  @Post('auth/logout')
+  logout(@Request() req) {
+    return;
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
-    console.log(req.user)
-    return req.user.sub
+  async getProfile(@Request() req) {
+    // let us = await this.usersService.findUser(req.user.payload.phone);
+    // console.log('us', us);
+    // console.log(req.user.phone);
+    return this.usersService.findUser(req.user.phone)
   }
 }

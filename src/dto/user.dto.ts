@@ -16,6 +16,8 @@ export class RegisterDto {
 
   @IsNotEmpty()
   appVersion: string;
+
+  token?:string
 }
 export class LoginDto {
   @IsNotEmpty()
