@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RegisterDto } from './dto/user.dto';
+import { LocalAuthGuard } from './auth/local-auth.guard';
 
 @Controller('api/v1')
 export class AppController {
@@ -27,10 +28,9 @@ export class AppController {
   }
 
   /// authantication users
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   login(@Request() req) {
-    console.log(req.user);
-    return this.authService.loginUser(req.user);
+    return this.authService.loginUser(req.user)
   }
 }

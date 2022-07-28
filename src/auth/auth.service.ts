@@ -1,3 +1,4 @@
+import { jwtConstants } from './auth.constant';
 import { UsersUtils } from './../users/utils/users.utils';
 import { UsersService } from './../users/users.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -33,6 +34,8 @@ export class AuthService {
     const otp = await this.usersUtils.otpCreator();
     await this.usersUtils.smsSender(user.phone, otp);
     const hash = await this.hashData(otp);
+    const sendSms = await this.usersUtils.smsSender(user.phone , otp)
+    console.log('sms status' , sendSms)
     console.log('OTP+CODE : ', otp);
 
     ///update password for login
@@ -52,10 +55,13 @@ export class AuthService {
 
   /// routes services { Login }
 
-  async loginUser(user: LoginDto) {
-    const payload = { username: user.phone, sub: user.userId };
+  async loginUser(user: any) {
+    const payload = { sub: user };
+    console.log(payload);
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, {
+        secret: jwtConstants.secret,
+      }),
     };
   }
 }

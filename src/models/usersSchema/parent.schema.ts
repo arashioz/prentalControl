@@ -15,9 +15,10 @@ export class User {
   phone: string;
 
   @Prop({ required: true })
-  registerDate: string;
+  registerDetail: [{ registerTime: string; registerDate: string }];
 
   @Prop()
+  @Exclude()
   password: string;
 
   @Prop({ required: true })

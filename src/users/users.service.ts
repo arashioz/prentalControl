@@ -13,9 +13,15 @@ export class UsersService {
   ) {}
 
   async createUser(user: RegisterDto): Promise<User> {
+    let date = new Date();
     let newuser = this.userRepository.create({
       userId: uuidv4(),
-      registerDate: Date(),
+      registerDetail: [
+        {
+          registerTime: date.toString(),
+          registerDate: date.getUTCHours().toString(),
+        },
+      ],
       phone: user.phone,
       password: null,
       type: user.type,
