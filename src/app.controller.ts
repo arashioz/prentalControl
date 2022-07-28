@@ -28,7 +28,6 @@ export class AppController {
   ///register users
   @Post('auth/register')
   register(@Body() user: RegisterDto) {
-    console.log(user);
     return this.authService.registerUser(user);
   }
 
@@ -40,8 +39,9 @@ export class AppController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('profile')
+  @Get('profile')
   getProfile(@Request() req) {
-    return this.usersService.findUser(req.user);
+    console.log(req.user)
+    return req.user.sub
   }
 }
