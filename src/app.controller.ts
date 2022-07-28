@@ -10,10 +10,15 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { RegisterDto } from './dto/user.dto';
 import { LocalAuthGuard } from './auth/local-auth.guard';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { UsersService } from './users/users.service';
 
 @Controller('api/v1')
 export class AppController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private usersService: UsersService,
+  ) {}
 
   @Get()
   getHello(): string {
@@ -31,6 +36,12 @@ export class AppController {
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   login(@Request() req) {
-    return this.authService.loginUser(req.user)
+    return this.authService.loginUser(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('profile')
+  getProfile(@Request() req) {
+    return this.usersService.findUser(req.user);
   }
 }
