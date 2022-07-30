@@ -1,6 +1,6 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 export type UserDocument = User & Document;
 
@@ -24,8 +24,8 @@ export class User {
   @Prop({ required: true })
   type: 'Parent' | 'Children';
 
-  // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  // children: User;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  User?: User;
 
   @Prop()
   token?: string;

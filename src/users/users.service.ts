@@ -35,13 +35,13 @@ export class UsersService {
     return this.userRepository.findAndUpdate(
       { phone: { $eq: phone } },
       {
-       ...updateData
+        ...updateData,
       },
     );
   }
 
   async findUser(user: any) {
-    return this.userRepository.findOne({ phone: { $eq: user.phone } });
+    return this.userRepository.findOne({...user});
   }
   async findOneUser(phone: string) {
     return this.userRepository.findOne({ phone: { $eq: phone } });

@@ -48,8 +48,7 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(@Request() req) {
-    let us = await this.usersService.findOneUser(req.user.payload);
-    console.log(req.user)
-    return this.usersService.findUser(req.user)
+    const user = req.user
+    return user
   }
 }
