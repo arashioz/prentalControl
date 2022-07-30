@@ -42,7 +42,7 @@ export class AuthService {
     ///update password for login
     if (foundUser) {
       this.usersService.updatePasswordUser(foundUser, hash);
-      return { token: otp };
+      return { token: otp }; // otp in response
     } else {
       const newuser = await this.usersService.createUser({
         phone: user.phone,
