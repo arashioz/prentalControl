@@ -38,10 +38,10 @@ export class AuthService {
     const sendSms = await this.usersUtils.smsSender(user.phone, otp);
     console.log('sms status', sendSms);
     console.log('OTP+CODE : ', otp);
-    console.log(user)
+    console.log(user);
     ///update password for login
     if (foundUser) {
-      this.usersService.updatePasswordUser(foundUser.phone, hash);
+      this.usersService.updateUser(foundUser.phone, { password: hash });
       return { token: otp }; // otp in response
     } else {
       const newuser = await this.usersService.createUser({
@@ -50,10 +50,10 @@ export class AuthService {
         appVersion: user.appVersion,
         token: otp.toString(),
       });
-    
+
       if (newuser) {
-        this.usersService.updatePasswordUser(newuser.phone, hash);
-        return newuser
+        this.usersService.updateUser(newuser.phone, { password: hash });
+        return newuser;
       }
     }
   }

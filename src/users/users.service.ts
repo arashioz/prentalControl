@@ -31,11 +31,11 @@ export class UsersService {
     return newuser;
   }
 
-  async updatePasswordUser(phone: any, updateData: any) {
+  async updateUser(phone: any, updateData: any) {
     return this.userRepository.findAndUpdate(
       { phone: { $eq: phone } },
       {
-        password: updateData,
+       ...updateData
       },
     );
   }
