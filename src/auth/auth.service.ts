@@ -20,7 +20,7 @@ export class AuthService {
   }
 
   async validateUser(phone: string, password: string): Promise<any> {
-    const user = await this.usersService.findUser(phone);
+    const user = await this.usersService.findOneUser(phone);
     const match = await bcrypt.compare(password, user.password);
     if (user && match) {
       return user;
@@ -30,7 +30,7 @@ export class AuthService {
 
   /// routes services { Register }
   async registerUser(user: RegisterDto): Promise<any> {
-    const foundUser = await this.usersService.findUser(user.phone);
+    const foundUser = await this.usersService.findUser(user);
 
     const otp = await this.usersUtils.otpCreator();
     await this.usersUtils.smsSender(user.phone, otp);
@@ -38,10 +38,10 @@ export class AuthService {
     const sendSms = await this.usersUtils.smsSender(user.phone, otp);
     console.log('sms status', sendSms);
     console.log('OTP+CODE : ', otp);
-
+    console.log(user)
     ///update password for login
     if (foundUser) {
-      this.usersService.updatePasswordUser(foundUser, hash);
+      this.usersService.updatePasswordUser(foundUser.phone, hash);
       return { token: otp }; // otp in response
     } else {
       const newuser = await this.usersService.createUser({
@@ -50,8 +50,10 @@ export class AuthService {
         appVersion: user.appVersion,
         token: otp.toString(),
       });
+    
       if (newuser) {
-        return this.usersService.updatePasswordUser(foundUser, hash);
+        this.usersService.updatePasswordUser(newuser.phone, hash);
+        return newuser
       }
     }
   }

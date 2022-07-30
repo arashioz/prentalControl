@@ -31,16 +31,19 @@ export class UsersService {
     return newuser;
   }
 
-  async updatePasswordUser(user: any, updateData) {
+  async updatePasswordUser(phone: any, updateData: any) {
     return this.userRepository.findAndUpdate(
-      { phone: { $eq: user.phone } },
+      { phone: { $eq: phone } },
       {
         password: updateData,
       },
     );
   }
 
-  async findUser(phone: string) {
+  async findUser(user: any) {
+    return this.userRepository.findOne({ phone: { $eq: user.phone } });
+  }
+  async findOneUser(phone: string) {
     return this.userRepository.findOne({ phone: { $eq: phone } });
   }
 }
