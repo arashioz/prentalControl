@@ -1,15 +1,23 @@
-import { IsMobilePhone, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
+import { IsNotEmpty, isString, IsString } from 'class-validator';
 
 export class UserDto {
+  @IsNotEmpty()
+  @IsString()
   phone: string;
+  @IsNotEmpty()
+  @IsString()
   appVersion: string;
+
+  @IsNotEmpty()
+  @IsString()
+  type: string;
 }
 
 export class RegisterDto {
   @IsNotEmpty()
   @IsString()
   phone: string;
-    
+
   @IsNotEmpty()
   @IsString()
   type: 'Parent' | 'Children';
@@ -17,7 +25,7 @@ export class RegisterDto {
   @IsNotEmpty()
   appVersion: string;
 
-  token?:string
+  token?: string;
 }
 export class LoginDto {
   @IsNotEmpty()

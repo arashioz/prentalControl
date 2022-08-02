@@ -24,8 +24,8 @@ export class User {
   @Prop({ required: true })
   type: 'Parent' | 'Children';
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  User?: User;
+  @Prop({})
+  children?: []
 
   @Prop()
   token?: string;

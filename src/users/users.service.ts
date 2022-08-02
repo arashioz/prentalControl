@@ -1,9 +1,9 @@
 import { UsersUtils } from './utils/users.utils';
 import { UserRepository } from './users.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from 'src/models/usersSchema/parent.schema';
-import { RegisterDto } from 'src/dto/user.dto';
+import { RegisterDto, UserDto } from 'src/dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -40,8 +40,14 @@ export class UsersService {
     );
   }
 
+  async addChildren(user: UserDto, children: any) {
+    if (user.type === 'Parent') {
+      this.createUser({ ...children })
+    }
+  }
+
   async findUser(user: any) {
-    return this.userRepository.findOne({...user});
+    return this.userRepository.findOne({ ...user });
   }
   async findOneUser(phone: string) {
     return this.userRepository.findOne({ phone: { $eq: phone } });

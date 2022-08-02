@@ -5,14 +5,15 @@ import {
   Get,
   Post,
   Request,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { RegisterDto } from './dto/user.dto';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { UsersService } from './users/users.service';
 import { TokenType } from './types/token.type';
+import { LocalStrategy } from './auth/local.strategy';
 
 @Controller('api/v1')
 export class AppController {
@@ -48,8 +49,15 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(@Request() req) {
-    const u = req.user.phone;
-    const user = await this.usersService.findOneUser(u);
+    let requser = await req.user.phone;
+    let user = await this.usersService.findOneUser(requser);
     return user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('addchildren')
+  async addChildren(@Body() body, @Request() req) {
+    console.log(body);
+    return this.usersService.addChildren(req.user, body);
   }
 }
