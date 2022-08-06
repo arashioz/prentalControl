@@ -12,9 +12,7 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
-    super({
-      secretOrPrivateKey: '1',
-    });
+    super();
   }
 
   async validate(phone: string, password: string) {
