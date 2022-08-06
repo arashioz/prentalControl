@@ -1,7 +1,11 @@
 import { jwtConstants } from './auth.constant';
 import { UsersUtils } from './../users/utils/users.utils';
 import { UsersService } from './../users/users.service';
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { LoginDto, RegisterDto } from 'src/dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -44,10 +48,15 @@ export class AuthService {
     console.log('sms status', sendSms);
     console.log('OTP+CODE : ', otp);
     console.log(user);
+
     ///update password for login
     if (foundUser) {
-      this.usersService.updateUser(foundUser.phone, { password: hash });
-      return { token: otp }; // otp in response
+      let newuser = foundUser; ///// change this line  jut change password
+      this.usersService.updateUser(foundUser.phone, {
+        password: hash,
+        token: otp,
+      });
+      return { newuser, token: otp }; // otp in response
     } else {
       const newuser = await this.usersService.createUser({
         phone: user.phone,
@@ -57,8 +66,11 @@ export class AuthService {
       });
 
       if (newuser) {
-        this.usersService.updateUser(newuser.phone, { password: hash , token:otp });
-        return {newuser , token:otp.toString()};
+        this.usersService.updateUser(newuser.phone, {
+          password: hash,
+          token: otp,
+        });
+        return { newuser, token: otp.toString() };
       }
     }
   }
