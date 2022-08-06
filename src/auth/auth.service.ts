@@ -57,8 +57,8 @@ export class AuthService {
       });
 
       if (newuser) {
-        this.usersService.updateUser(newuser.phone, { password: hash });
-        return newuser;
+        this.usersService.updateUser(newuser.phone, { password: hash , token:otp });
+        return {newuser , token:otp.toString()};
       }
     }
   }
