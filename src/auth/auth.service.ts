@@ -51,12 +51,12 @@ export class AuthService {
 
     ///update password for login
     if (foundUser) {
-      let newuser = foundUser; ///// change this line  jut change password
-      this.usersService.updateUser(foundUser.phone, {
+      await this.usersService.updateUser(foundUser.phone, {
         password: hash,
         token: otp,
       });
-      return { newuser, token: otp }; // otp in response
+      const fuser = await this.usersService.findUser(user);
+      return fuser;
     } else {
       const newuser = await this.usersService.createUser({
         phone: user.phone,
@@ -64,14 +64,7 @@ export class AuthService {
         appVersion: user.appVersion,
         token: otp.toString(),
       });
-
-      if (newuser) {
-        this.usersService.updateUser(newuser.phone, {
-          password: hash,
-          token: otp,
-        });
-        return { newuser, token: otp.toString() };
-      }
+      return newuser
     }
   }
 
