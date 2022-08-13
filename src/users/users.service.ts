@@ -32,17 +32,17 @@ export class UsersService {
   }
 
   async updateUser(phone: any, updateData: any) {
-    return this.userRepository.findAndUpdate(
-      { phone: { $eq: phone } },
+    return await this.userRepository.findAndUpdate(
+      { phone: phone },
       {
         ...updateData,
       },
-    );
+    )
   }
 
   async addChildren(user: UserDto, children: any) {
     if (user.type === 'Parent') {
-      this.createUser({ ...children })
+      this.createUser({ ...children });
     }
   }
 
