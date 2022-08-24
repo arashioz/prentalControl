@@ -49,6 +49,22 @@ export class AuthService {
     console.log('OTP+CODE : ', otp);
     console.log(user);
 
+    if (!foundUser) {
+      const newuser = await this.usersService.createUser(
+        {
+          phone: user.phone,
+          type: user.type,
+          appVersion: user.appVersion,
+        },
+        otp,
+        hash,
+      );
+      let updateU = await this.usersService.updateUser(user.phone, {
+        token: otp,
+      });
+      console.log(newuser);
+      return updateU;
+    }
     ///update password for login
     if (foundUser) {
       await this.usersService.updateUser(foundUser.phone, {
@@ -57,14 +73,6 @@ export class AuthService {
       });
       const fuser = await this.usersService.findUser(user);
       return fuser;
-    } else {
-      const newuser = await this.usersService.createUser({
-        phone: user.phone,
-        type: user.type,
-        appVersion: user.appVersion,
-        token: otp.toString(),
-      });
-      return newuser
     }
   }
 
