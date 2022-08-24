@@ -12,7 +12,7 @@ export class UsersService {
     private userUtils: UsersUtils,
   ) {}
 
-  async createUser(user: RegisterDto): Promise<User> {
+  async createUser(user: RegisterDto, otp: any, hash: any): Promise<User> {
     let date = new Date();
     let newuser = this.userRepository.create({
       userId: uuidv4(),
@@ -23,8 +23,8 @@ export class UsersService {
         },
       ],
       phone: user.phone,
-      password: null,
-      token: null,
+      password: hash,
+      token: otp,
       type: user.type,
       appVersion: user.appVersion,
     });
@@ -37,12 +37,13 @@ export class UsersService {
       {
         ...updateData,
       },
-    )
+    );
   }
 
   async addChildren(user: UserDto, children: any) {
-    if (user.type === 'Parent') {
-      this.createUser({ ...children });
+    if (user.phone) {
+      let foundUser = this.findOneUser(user.phone);
+      console.log(foundUser);
     }
   }
 

@@ -57,7 +57,7 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Post('addchildren')
   async addChildren(@Body() body, @Request() req) {
-    console.log(body);
+    // console.log(req.user);
     return this.usersService.addChildren(req.user, body);
   }
 }
