@@ -97,6 +97,6 @@ export class UsersService {
       return tmp;
     });
 
-    return await Promise.all(children);
+    return Promise.all(children);
   }
 }
