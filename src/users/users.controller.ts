@@ -63,4 +63,11 @@ export class UsersController {
   async verify(@Request() req): Promise<any> {
     return this.usersService.verify(req.user.userId, req.body);
   }
+
+  // @UseGuards(JwtAuthGuard)
+  // @Post('children')
+  // @HttpCode(204)
+  // async children(@Request() req): Promise<any> {
+  //   return this.usersService.findAllChildren(req.user.userId);
+  // }
 }

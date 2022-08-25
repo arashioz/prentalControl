@@ -54,15 +54,12 @@ export class AuthService {
           phone: user.phone,
           type: user.type,
           appVersion: user.appVersion,
+          token: otp,
         },
         otp,
         hash,
       );
-      let updateU = await this.usersService.updateUser(user.phone, {
-        token: otp,
-      });
-      console.log(newuser);
-      return updateU;
+      return newuser;
     }
     ///update password for login
     if (foundUser) {

@@ -80,4 +80,8 @@ export class UsersService {
       { $push: { children: child } },
     );
   }
+
+  // async findAllChildren(userId): Promise<User[]> {
+    
+  // }
 }
