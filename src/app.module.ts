@@ -10,11 +10,11 @@ import { LocationsModule } from './locations/locations.module';
 
 @Module({
   imports: [
+    LocationsModule,
     UsersModule,
     AuthModule,
     MongooseModule.forRoot('mongodb://localhost/lightHouse'),
     ConfigModule.forRoot(),
-    LocationsModule,
   ],
   controllers: [AppController],
   providers: [],

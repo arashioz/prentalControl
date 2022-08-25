@@ -31,6 +31,9 @@ export class User {
   token?: string;
 
   @Prop()
+  name?: string;
+
+  @Prop()
   appVersion: string;
 
   // @Prop(

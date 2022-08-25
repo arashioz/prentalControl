@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   ForbiddenException,
+  Get,
   HttpCode,
   Post,
   Request,
@@ -44,6 +45,7 @@ export class UsersController {
           type: user.type,
           appVersion: user.appVersion,
           token: otp,
+          name: user.name || null,
         },
         otp,
         hash,
@@ -64,10 +66,9 @@ export class UsersController {
     return this.usersService.verify(req.user.userId, req.body);
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Post('children')
-  // @HttpCode(204)
-  // async children(@Request() req): Promise<any> {
-  //   return this.usersService.findAllChildren(req.user.userId);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get('children')
+  async children(@Request() req): Promise<any[]> {
+    return this.usersService.findAllChildren(req.user.userId);
+  }
 }

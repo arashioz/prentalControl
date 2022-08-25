@@ -9,12 +9,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { User } from 'src/models/usersSchema/parent.schema';
 import { RegisterDto, UserDto } from 'src/dto/user.dto';
 import * as bcrypt from 'bcrypt';
+import { LocationRepository } from 'src/locations/locations.repository';
 
 @Injectable()
 export class UsersService {
   constructor(
     private userRepository: UserRepository,
-    private userUtils: UsersUtils,
+    private locationRepository: LocationRepository,
   ) {}
 
   async createUser(user: RegisterDto, otp: any, hash: any): Promise<User> {
@@ -28,6 +29,7 @@ export class UsersService {
         },
       ],
       phone: user.phone,
+      name: user.name,
       password: hash,
       token: otp,
       type: user.type,
@@ -81,7 +83,20 @@ export class UsersService {
     );
   }
 
-  // async findAllChildren(userId): Promise<User[]> {
-    
-  // }
+  async findAllChildren(userId): Promise<any[]> {
+    const parent = await this.userRepository.findOne({ userId });
+
+    if (!parent) throw new NotFoundException('User not found');
+
+    const children: any = (parent.children || []).map(async (child) => {
+      let tmp = await this.userRepository.findOne(child);
+      tmp['location'] = await this.locationRepository.findLatest({
+        userId: tmp.userId,
+      });
+
+      return tmp;
+    });
+
+    return await Promise.all(children);
+  }
 }
