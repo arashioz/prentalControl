@@ -30,7 +30,7 @@ export class LocationController {
   @UseGuards(JwtAuthGuard)
   @Get('latest')
   async findLatest(@Request() request): Promise<Location> {
-    return this.locationService.findLatest(request.user.userId);
+    return this.locationService.findLatest(request.body.userId);
   }
 
   @UseGuards(JwtAuthGuard)
