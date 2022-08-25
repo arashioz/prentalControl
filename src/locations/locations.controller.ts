@@ -36,7 +36,7 @@ export class LocationController {
   @UseGuards(JwtAuthGuard)
   @Get('history')
   async findHistory(@Request() request): Promise<any> {
-    const locs = this.locationService.findHistory(request.user.userId);
+    const locs = this.locationService.findHistory(request.body.userId);
     return locs;
   }
 
