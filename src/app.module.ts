@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { UsersService } from './users/users.service';
+import { LocationsModule } from './locations/locations.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UsersService } from './users/users.service';
     AuthModule,
     MongooseModule.forRoot('mongodb://localhost/lightHouse'),
     ConfigModule.forRoot(),
+    LocationsModule,
   ],
   controllers: [AppController],
   providers: [],
