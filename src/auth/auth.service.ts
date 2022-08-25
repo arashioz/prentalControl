@@ -42,12 +42,11 @@ export class AuthService {
     const foundUser = await this.usersService.findUser(user);
 
     const otp = await this.usersUtils.otpCreator();
-    await this.usersUtils.smsSender(user.phone, otp);
     const hash = await this.hashData(otp);
     const sendSms = await this.usersUtils.smsSender(user.phone, otp);
     console.log('sms status', sendSms);
     console.log('OTP+CODE : ', otp);
-    console.log(user);
+    // console.log(user);
 
     if (!foundUser) {
       const newuser = await this.usersService.createUser(

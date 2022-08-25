@@ -20,7 +20,7 @@ export class RegisterDto {
 
   @IsNotEmpty()
   @IsString()
-  type: 'Parent' | 'Children';
+  type: 'PARENT' | 'CHILD';
 
   @IsNotEmpty()
   appVersion: string;

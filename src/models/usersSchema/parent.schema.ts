@@ -22,10 +22,10 @@ export class User {
   password: string;
 
   @Prop({ required: true })
-  type: 'Parent' | 'Children';
+  type: 'PARENT' | 'CHILD';
 
-  @Prop({})
-  children?: []
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  children: User[];
 
   @Prop()
   token?: string;
