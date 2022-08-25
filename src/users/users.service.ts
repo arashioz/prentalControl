@@ -88,8 +88,8 @@ export class UsersService {
 
     if (!parent) throw new NotFoundException('User not found');
 
-    const children: any = (parent.children || []).map(async (child) => {
-      let tmp = await this.userRepository.findOne(child);
+    const children: any[] = (parent.children || []).map(async (child) => {
+      let tmp = await this.userRepository.findOne({_id: child});
       tmp['location'] = await this.locationRepository.findLatest({
         userId: tmp.userId,
       });

@@ -58,7 +58,6 @@ export class UsersController {
     }
   }
 
-
   @UseGuards(JwtAuthGuard)
   @Post('verify')
   @HttpCode(204)
